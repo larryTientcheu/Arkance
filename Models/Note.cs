@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Arkance.Models;
 
@@ -12,8 +13,8 @@ public partial class Note
     public int? EleveId { get; set; }
 
     public int? MatiereId { get; set; }
-
-    public virtual Eleve? Eleve { get; set; }
-
-    public virtual Matiere? Matiere { get; set; }
+    [JsonIgnore]
+    public virtual Eleve? Eleve { get; }
+    
+    public virtual Matiere? Matiere { get; }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Arkance.Models;
 
@@ -12,8 +13,8 @@ public partial class Professeur
     public string Prenom { get; set; } = null!;
 
     public string Genre { get; set; } = null!;
-
-    public virtual ICollection<Classe> Classes { get; set; } = new List<Classe>();
-
-    public virtual ICollection<Matiere> Matieres { get; set; } = new List<Matiere>();
+    [JsonIgnore]
+    public virtual ICollection<Classe> Classes { get; } = new List<Classe>();
+    [JsonIgnore]
+    public virtual ICollection<Matiere> Matieres { get; } = new List<Matiere>();
 }

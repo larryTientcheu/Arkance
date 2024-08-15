@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Arkance.Models;
 
@@ -15,7 +16,8 @@ public partial class Eleve
 
     public int? ClasseId { get; set; }
 
+    [JsonIgnore]
     public virtual Classe? Classe { get; set; }
 
-    public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
+    public virtual ICollection<Note> Notes { get; } = new List<Note>();
 }
