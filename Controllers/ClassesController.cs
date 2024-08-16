@@ -6,34 +6,29 @@ namespace Arkance.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ClassesController : ControllerBase
+    public class ClassesController(ArkanceTestContext context) : ControllerBase
     {
-        private readonly ArkanceTestContext _context;
-
-        public ClassesController(ArkanceTestContext context)
-        {
-            _context = context;
-        }
 
         // GET: api/Classes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Classe>>> GetClasses()
         {
-            return await _context.Classes.ToListAsync();
+            return await context.Classes.ToListAsync();
         }
 
+        // TODO: Lister les élèves par classe.
         // GET: api/Classes/5?eleves=:bool
         [HttpGet("{id}")]
         public async Task<IActionResult> GetClasse(int id, [FromQuery] bool eleves)
         {
-            var classe = await _context.Classes.FindAsync(id);
+            var classe = await context.Classes.FindAsync(id);
 
             if (classe == null)
             {
                 return NotFound();
             }
             if (eleves) {
-                var eleveParClass = await _context.Classes
+                var eleveParClass = await context.Classes
                     .Where(c => c.Id == id)
                     .Include(c => c.Eleves)
                     .Include(c => c.Professeur)
@@ -45,21 +40,16 @@ namespace Arkance.Controllers
             return Ok(classe);
         }
 
+
         // PUT: api/Classes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutClasse(int id, Classe classe)
-        {
-            if (id != classe.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(classe).State = EntityState.Modified;
+        {         
+            context.Entry(classe).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -77,12 +67,11 @@ namespace Arkance.Controllers
         }
 
         // POST: api/Classes
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Classe>> PostClasse(Classe classe)
         {
-            _context.Classes.Add(classe);
-            await _context.SaveChangesAsync();
+            context.Classes.Add(classe);
+            await context.SaveChangesAsync();
 
             return CreatedAtAction("GetClasse", new { id = classe.Id }, classe);
         }
@@ -91,21 +80,21 @@ namespace Arkance.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteClasse(int id)
         {
-            var classe = await _context.Classes.FindAsync(id);
+            var classe = await context.Classes.FindAsync(id);
             if (classe == null)
             {
                 return NotFound();
             }
 
-            _context.Classes.Remove(classe);
-            await _context.SaveChangesAsync();
+            context.Classes.Remove(classe);
+            await context.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool ClasseExists(int id)
         {
-            return _context.Classes.Any(e => e.Id == id);
+            return context.Classes.Any(e => e.Id == id);
         }
     }
 }

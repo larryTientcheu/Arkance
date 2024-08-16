@@ -6,35 +6,31 @@ namespace Arkance.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ElevesController : ControllerBase
+    public class ElevesController(ArkanceTestContext context) : ControllerBase
     {
-        private readonly ArkanceTestContext _context;
 
-        public ElevesController(ArkanceTestContext context)
-        {
-            _context = context;
-        }
-
+        //TODO: Lister tous les élèves (trié dans l’ordre alphabétique par nom puis prénom).
         // GET: api/Eleves?sorted:=:bool
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Eleve>>> GetEleves([FromQuery] bool sorted)
         {
             if ( sorted)
             {
-             var eleves = await _context.Eleves
+             var eleves = await context.Eleves
                     .OrderBy(e => e.Nom)
                     .OrderBy(e => e.Prenom)
                     .ToListAsync();
                return Ok(eleves);
             }
-            return await _context.Eleves.ToListAsync();
+            return await context.Eleves.ToListAsync();
         }
 
+        //TODO: Lister les notes d’un élève.
         // GET: api/Eleves/5?notes=:bool
         [HttpGet("{id}")]
         public async Task<ActionResult> GetEleve(int id, [FromQuery] bool notes)
         {
-            var eleve = await _context.Eleves.FindAsync(id);
+            var eleve = await context.Eleves.FindAsync(id);
 
             if (eleve == null)
             {
@@ -42,11 +38,11 @@ namespace Arkance.Controllers
             }
             if (notes)
             {
-                var eleveNotes = await _context.Eleves
+                var eleveNotes = await context.Eleves
                     .Where(e => e.Id == id)
                     .Include(e => e.Notes) 
                     .ThenInclude(m => m.Matiere)
-                    .ThenInclude(p => p.Professeurs)
+                    .ThenInclude( p => p.Professeurs)
                     .ToListAsync();
                 return Ok(eleveNotes);
             }
@@ -55,20 +51,16 @@ namespace Arkance.Controllers
         }
 
         // PUT: api/Eleves/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutEleve(int id, Eleve eleve)
         {
-            if (id != eleve.Id)
-            {
-                return BadRequest();
-            }
+          
 
-            _context.Entry(eleve).State = EntityState.Modified;
+            context.Entry(eleve).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -85,13 +77,13 @@ namespace Arkance.Controllers
             return NoContent();
         }
 
+        // TODO: Ajouter un élève.
         // POST: api/Eleves
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Eleve>> PostEleve(Eleve eleve)
         {
-            _context.Eleves.Add(eleve);
-            await _context.SaveChangesAsync();
+            context.Eleves.Add(eleve);
+            await context.SaveChangesAsync();
 
             return CreatedAtAction("GetEleve", new { id = eleve.Id }, eleve);
         }
@@ -100,21 +92,21 @@ namespace Arkance.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteEleve(int id)
         {
-            var eleve = await _context.Eleves.FindAsync(id);
+            var eleve = await context.Eleves.FindAsync(id);
             if (eleve == null)
             {
                 return NotFound();
             }
 
-            _context.Eleves.Remove(eleve);
-            await _context.SaveChangesAsync();
+            context.Eleves.Remove(eleve);
+            await context.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool EleveExists(int id)
         {
-            return _context.Eleves.Any(e => e.Id == id);
+            return context.Eleves.Any(e => e.Id == id);
         }
     }
 }

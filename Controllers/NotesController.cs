@@ -1,32 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Arkance.Models;
+using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
 namespace Arkance.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NotesController : ControllerBase
+    public class NotesController(ArkanceTestContext context) : ControllerBase
     {
-        private readonly ArkanceTestContext _context;
-
-        public NotesController(ArkanceTestContext context)
-        {
-            _context = context;
-        }
 
         // GET: api/Notes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Note>>> GetNotes()
         {
-            return await _context.Notes.ToListAsync();
+            return await context.Notes.ToListAsync();
         }
 
         // GET: api/Notes/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Note>> GetNote(int id)
         {
-            var note = await _context.Notes.FindAsync(id);
+            var note = await context.Notes.FindAsync(id);
 
             if (note == null)
             {
@@ -36,21 +31,16 @@ namespace Arkance.Controllers
             return note;
         }
 
+        // TODO: Modifier une note d’un élève
         // PUT: api/Notes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutNote(int id, Note note)
-        {
-            if (id != note.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(note).State = EntityState.Modified;
+        {           
+            context.Entry(note).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -63,40 +53,60 @@ namespace Arkance.Controllers
                     throw;
                 }
             }
+            catch (DbUpdateException ex)
+            {
+                return BadRequest(ex.InnerException?.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException?.Message);
+            }
 
             return NoContent();
+
+
         }
 
+        //TODO: Ajouter une note d’un élève.
         // POST: api/Notes
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Note>> PostNote(Note note)
         {
-            _context.Notes.Add(note);
-            await _context.SaveChangesAsync();
+            try
+            {
+                context.Notes.Add(note);
+                await context.SaveChangesAsync();
+                return CreatedAtAction("GetNote", new { id = note.Id }, note);
+            }
+            catch (DbUpdateException)
+            {
+                return BadRequest("The note value must be between 0 and 20");
+            }
 
-            return CreatedAtAction("GetNote", new { id = note.Id }, note);
+            
         }
 
         // DELETE: api/Notes/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteNote(int id)
         {
-            var note = await _context.Notes.FindAsync(id);
+            var note = await context.Notes.FindAsync(id);
             if (note == null)
             {
                 return NotFound();
             }
 
-            _context.Notes.Remove(note);
-            await _context.SaveChangesAsync();
+            context.Notes.Remove(note);
+            await context.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool NoteExists(int id)
         {
-            return _context.Notes.Any(e => e.Id == id);
+            return context.Notes.Any(e => e.Id == id);
         }
+
+        
     }
 }

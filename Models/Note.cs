@@ -15,6 +15,6 @@ public partial class Note
     public int? MatiereId { get; set; }
     [JsonIgnore]
     public virtual Eleve? Eleve { get; }
-    
+
     public virtual Matiere? Matiere { get; }
 }

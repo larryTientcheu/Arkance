@@ -6,26 +6,22 @@ namespace Arkance.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MatieresController : ControllerBase
+    public class MatieresController(ArkanceTestContext context) : ControllerBase
     {
-        private readonly ArkanceTestContext _context;
-
-        public MatieresController(ArkanceTestContext context)
-        {
-            _context = context;
-        }
 
         // GET: api/Matieres
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Matiere>>> GetMatieres()
         {
-            return await _context.Matieres.ToListAsync();
+            return await context.Matieres.ToListAsync();
         }
 
+        // TODO: Lister les professeurs par matière enseignée.
+        //GET: api/Matieres/Professeurs
         [HttpGet("professeurs")]
         public async Task<ActionResult<IEnumerable<Professeurs_MatieresDto>>> GetProfParMAtieres()
         {
-            var profMat = await _context.Matieres
+            var profMat = await context.Matieres
                 .Include(m => m.Professeurs)            
                 .AsNoTracking()
                 .ToListAsync();
@@ -36,7 +32,7 @@ namespace Arkance.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Matiere>> GetMatiere(int id)
         {
-            var matiere = await _context.Matieres.FindAsync(id);
+            var matiere = await context.Matieres.FindAsync(id);
 
             if (matiere == null)
             {
@@ -47,7 +43,6 @@ namespace Arkance.Controllers
         }
 
         // PUT: api/Matieres/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutMatiere(int id, Matiere matiere)
         {
@@ -56,11 +51,11 @@ namespace Arkance.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(matiere).State = EntityState.Modified;
+            context.Entry(matiere).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                await context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -78,12 +73,11 @@ namespace Arkance.Controllers
         }
 
         // POST: api/Matieres
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Matiere>> PostMatiere(Matiere matiere)
         {
-            _context.Matieres.Add(matiere);
-            await _context.SaveChangesAsync();
+            context.Matieres.Add(matiere);
+            await context.SaveChangesAsync();
 
             return CreatedAtAction("GetMatiere", new { id = matiere.Id }, matiere);
         }
@@ -92,21 +86,21 @@ namespace Arkance.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteMatiere(int id)
         {
-            var matiere = await _context.Matieres.FindAsync(id);
+            var matiere = await context.Matieres.FindAsync(id);
             if (matiere == null)
             {
                 return NotFound();
             }
 
-            _context.Matieres.Remove(matiere);
-            await _context.SaveChangesAsync();
+            context.Matieres.Remove(matiere);
+            await context.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool MatiereExists(int id)
         {
-            return _context.Matieres.Any(e => e.Id == id);
+            return context.Matieres.Any(e => e.Id == id);
         }
     }
 }

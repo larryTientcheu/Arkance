@@ -148,8 +148,8 @@ public partial class ArkanceTestContext : DbContext
                     {
                         j.HasKey("ProfesseurId", "MatiereId").HasName("professeur_matiere_pkey");
                         j.ToTable("professeur_matiere");
-                        j.HasIndex(new[] { "MatiereId" }, "idx_professeur_matiere_matiere_id");
-                        j.HasIndex(new[] { "ProfesseurId" }, "idx_professeur_matiere_professeur_id");
+                        j.HasIndex(["MatiereId"], "idx_professeur_matiere_matiere_id");
+                        j.HasIndex(["ProfesseurId"], "idx_professeur_matiere_professeur_id");
                         j.IndexerProperty<int>("ProfesseurId").HasColumnName("professeur_id");
                         j.IndexerProperty<int>("MatiereId").HasColumnName("matiere_id");
                     });
