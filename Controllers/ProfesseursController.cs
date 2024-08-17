@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Arkance.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Arkance.Models;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Arkance.Controllers
 {
@@ -13,8 +12,8 @@ namespace Arkance.Controllers
         // GET: api/Professeurs
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Professeur>>> GetProfesseurs()
-        {    
-            return await context.Professeurs.ToListAsync();  
+        {
+            return await context.Professeurs.ToListAsync();
         }
 
         // GET: api/Professeurs/5

@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Arkance.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Arkance.Models;
 
 namespace Arkance.Controllers
 {
@@ -14,13 +14,13 @@ namespace Arkance.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Eleve>>> GetEleves([FromQuery] bool sorted)
         {
-            if ( sorted)
+            if (sorted)
             {
-             var eleves = await context.Eleves
-                    .OrderBy(e => e.Nom)
-                    .OrderBy(e => e.Prenom)
-                    .ToListAsync();
-               return Ok(eleves);
+                var eleves = await context.Eleves
+                       .OrderBy(e => e.Nom)
+                       .OrderBy(e => e.Prenom)
+                       .ToListAsync();
+                return Ok(eleves);
             }
             return await context.Eleves.ToListAsync();
         }
@@ -40,9 +40,9 @@ namespace Arkance.Controllers
             {
                 var eleveNotes = await context.Eleves
                     .Where(e => e.Id == id)
-                    .Include(e => e.Notes) 
+                    .Include(e => e.Notes)
                     .ThenInclude(m => m.Matiere)
-                    .ThenInclude( p => p.Professeurs)
+                    .ThenInclude(p => p.Professeurs)
                     .ToListAsync();
                 return Ok(eleveNotes);
             }
@@ -54,7 +54,7 @@ namespace Arkance.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutEleve(int id, Eleve eleve)
         {
-          
+
 
             context.Entry(eleve).State = EntityState.Modified;
 

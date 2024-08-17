@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Arkance.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Arkance.Models;
 
 namespace Arkance.Controllers
 {
@@ -22,7 +22,7 @@ namespace Arkance.Controllers
         public async Task<ActionResult<IEnumerable<Professeurs_MatieresDto>>> GetProfParMAtieres()
         {
             var profMat = await context.Matieres
-                .Include(m => m.Professeurs)            
+                .Include(m => m.Professeurs)
                 .AsNoTracking()
                 .ToListAsync();
             return Ok(profMat);

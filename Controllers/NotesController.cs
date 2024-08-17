@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Arkance.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Arkance.Models;
-using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.Blazor;
 
 namespace Arkance.Controllers
 {
@@ -35,7 +34,7 @@ namespace Arkance.Controllers
         // PUT: api/Notes/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutNote(int id, Note note)
-        {           
+        {
             context.Entry(note).State = EntityState.Modified;
 
             try
@@ -83,7 +82,7 @@ namespace Arkance.Controllers
                 return BadRequest("The note value must be between 0 and 20");
             }
 
-            
+
         }
 
         // DELETE: api/Notes/5
@@ -107,6 +106,6 @@ namespace Arkance.Controllers
             return context.Notes.Any(e => e.Id == id);
         }
 
-        
+
     }
 }

@@ -1,0 +1,39 @@
+﻿version: '3.8'
+
+services:
+  arkance-db:
+    image: postgres:latest
+    container_name: arkance-db
+    environment:
+      POSTGRES_USER: myusername
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: ArkanceDB
+    ports:
+      - "5432:5432"
+    networks:
+      - arkance-network
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  arkance-app:
+    image: arkance-api
+    container_name: arkance-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5277:8080"
+    networks:
+      - arkance-network
+    depends_on:
+      - arkance-db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Staging
+      - dbcon=Server=arkance-db;Port=5432;Username=myusername;Password=mypassword;Database=ArkanceDB
+
+networks:
+  arkance-network:
+    driver: bridge
+
+volumes:
+  db_data:

@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Arkance.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Arkance.Models;
 
 namespace Arkance.Controllers
 {
@@ -27,7 +27,8 @@ namespace Arkance.Controllers
             {
                 return NotFound();
             }
-            if (eleves) {
+            if (eleves)
+            {
                 var eleveParClass = await context.Classes
                     .Where(c => c.Id == id)
                     .Include(c => c.Eleves)
@@ -36,7 +37,7 @@ namespace Arkance.Controllers
 
                 return Ok(eleveParClass);
             }
-          
+
             return Ok(classe);
         }
 
@@ -44,7 +45,7 @@ namespace Arkance.Controllers
         // PUT: api/Classes/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutClasse(int id, Classe classe)
-        {         
+        {
             context.Entry(classe).State = EntityState.Modified;
 
             try
