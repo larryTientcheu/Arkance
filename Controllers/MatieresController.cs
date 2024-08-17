@@ -17,20 +17,9 @@ namespace Arkance.Controllers
         }
 
         // TODO: Lister les professeurs par matière enseignée.
-        //GET: api/Matieres/Professeurs
-        [HttpGet("professeurs")]
-        public async Task<ActionResult<IEnumerable<Professeurs_MatieresDto>>> GetProfParMAtieres()
-        {
-            var profMat = await context.Matieres
-                .Include(m => m.Professeurs)
-                .AsNoTracking()
-                .ToListAsync();
-            return Ok(profMat);
-        }
-
-        // GET: api/Matieres/5
+        // GET: api/Matieres/5?professeurs=:=bool
         [HttpGet("{id}")]
-        public async Task<ActionResult<Matiere>> GetMatiere(int id)
+        public async Task<ActionResult<Matiere>> GetMatiere(int id, [FromQuery] bool professeurs)
         {
             var matiere = await context.Matieres.FindAsync(id);
 
@@ -38,8 +27,17 @@ namespace Arkance.Controllers
             {
                 return NotFound();
             }
+            if (professeurs)
+            {
+                var profParMat = await context.Matieres
+                    .Where(m => m.Id == id)
+                    .Include(p => p.Professeurs)
+                    .AsNoTracking()
+                    .ToListAsync();
+                return Ok(profParMat);
+            }
 
-            return matiere;
+            return Ok(matiere);
         }
 
         // PUT: api/Matieres/5
