@@ -13,7 +13,7 @@ public partial class Classe
     [Required(ErrorMessage = "The ProfesseurId field is required.")]
     public int? ProfesseurId { get; set; }
 
-    public virtual ICollection<Eleve> Eleves { get; set; } = new List<Eleve>();
+    public virtual ICollection<Eleve> Eleves { get; } = new List<Eleve>();
     [JsonIgnore]
     public virtual Professeur? Professeur { get; }
 }

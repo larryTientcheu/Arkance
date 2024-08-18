@@ -31,7 +31,7 @@ namespace Arkance.Controllers
             {
                 var eleveParClass = await context.Classes
                     .Where(c => c.Id == id)
-                    .Include(c => c.Eleves)                 
+                    .Include(c => c.Eleves)
                     .ToListAsync();
 
                 return Ok(eleveParClass);

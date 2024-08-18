@@ -1,6 +1,4 @@
-﻿version: '3.8'
-
-services:
+﻿services:
   arkance-db:
     image: postgres:latest
     container_name: arkance-db

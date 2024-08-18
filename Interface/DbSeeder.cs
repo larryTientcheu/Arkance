@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Arkance.Models;
+﻿using Arkance.Models;
 using Bogus;
 
 namespace Arkance.Interface
@@ -64,8 +63,8 @@ namespace Arkance.Interface
             { "Sixieme", "Cinquieme", "Quatrieme", "Troisieme", "Seconde", "Premiere", "Terminal" };
 
             var classes = new List<Classe>();
-           foreach (string classe in classeList)
-            {          
+            foreach (string classe in classeList)
+            {
                 var randomId = random.Next(0, 6);
                 var singleClass = new Classe
                 {
