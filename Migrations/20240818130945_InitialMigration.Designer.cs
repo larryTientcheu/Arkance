@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Arkance.Migrations
 {
     [DbContext(typeof(ArkanceTestContext))]
-    [Migration("20240818001713_InitialMigration")]
+    [Migration("20240818130945_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -119,6 +119,10 @@ namespace Arkance.Migrations
                         .HasColumnName("id");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Appreciation")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<int?>("EleveId")
                         .IsRequired()

@@ -113,7 +113,8 @@ namespace Arkance.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn),
                     valeur = table.Column<double>(type: "double precision", nullable: true),
                     eleve_id = table.Column<int>(type: "integer", nullable: false),
-                    matiere_id = table.Column<int>(type: "integer", nullable: false)
+                    matiere_id = table.Column<int>(type: "integer", nullable: false),
+                    Appreciation = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {

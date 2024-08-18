@@ -1,4 +1,5 @@
-﻿using Arkance.Models;
+﻿using Arkance.Interface;
+using Arkance.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -73,6 +74,9 @@ namespace Arkance.Controllers
         {
             try
             {
+                var helper = new Helpers();
+                if (note.Appreciation is null)
+                    note.Appreciation = helper.SetAppreciations(note.Valeur.Value);               
                 context.Notes.Add(note);
                 await context.SaveChangesAsync();
                 return CreatedAtAction("GetNote", new { id = note.Id }, note);

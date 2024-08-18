@@ -15,8 +15,12 @@ public partial class Note
 
     [Required(ErrorMessage = "The MatiereId field is required.")]
     public int? MatiereId { get; set; }
+
+    public string? Appreciation { get; set; } = null!;
+
     [JsonIgnore]
     public virtual Eleve? Eleve { get; }
 
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
     public virtual Matiere? Matiere { get; }
 }

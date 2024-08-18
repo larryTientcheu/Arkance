@@ -43,7 +43,7 @@ namespace Arkance.Controllers
                     .Include(e => e.Notes)
                     .ThenInclude(m => m.Matiere)
                     .ThenInclude(p => p.Professeurs)
-                    .ToListAsync();
+                    .FirstAsync();
                 return Ok(eleveNotes);
             }
 

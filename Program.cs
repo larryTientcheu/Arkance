@@ -1,6 +1,7 @@
 using Arkance.Interface;
 using Arkance.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +14,10 @@ builder.Services.AddDbContext<ArkanceTestContext>();
 
 // Configuring Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Arkance School API", Version = "v1" });
+});
 
 var app = builder.Build();
 

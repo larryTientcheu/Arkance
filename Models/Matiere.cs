@@ -9,6 +9,7 @@ public partial class Matiere
 
     [Required(ErrorMessage = "The field Nom is required.")]
     public string Nom { get; set; } = null!;
+
     [JsonIgnore]
     public virtual ICollection<Note> Notes { get; set; } = new List<Note>();
 

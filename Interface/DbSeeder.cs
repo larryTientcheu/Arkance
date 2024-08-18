@@ -100,16 +100,19 @@ namespace Arkance.Interface
 
             // Seed Notes
             var notes = new List<Note>();
+            var helper = new Helpers();
             foreach (var eleve in eleves)
             {
                 var randomMatieres = faker.PickRandom(matieres, faker.Random.Int(1, matieres.Count())).ToList();
                 foreach (var matiere in randomMatieres)
                 {
+                    var noteValue = faker.Random.Double(0, 20);
                     var note = new Note
                     {
-                        Valeur = faker.Random.Double(0, 20),
+                        Valeur = noteValue,
                         EleveId = eleve.Id,
-                        MatiereId = matiere.Id
+                        MatiereId = matiere.Id,
+                        Appreciation = helper.SetAppreciations(noteValue)
                     };
                     notes.Add(note);
                 }

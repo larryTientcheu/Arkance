@@ -19,7 +19,7 @@ namespace Arkance.Controllers
         // TODO: Lister les professeurs par matière enseignée.
         // GET: api/Matieres/5?professeurs=:=bool
         [HttpGet("{id}")]
-        public async Task<ActionResult<Matiere>> GetMatiere(int id, [FromQuery] bool professeurs)
+        public async Task<ActionResult<Matiere>> GetMatiere(int id, [FromQuery] bool professeurs, bool eleves)
         {
             var matiere = await context.Matieres.FindAsync(id);
 
@@ -33,7 +33,7 @@ namespace Arkance.Controllers
                     .Where(m => m.Id == id)
                     .Include(p => p.Professeurs)
                     .AsNoTracking()
-                    .ToListAsync();
+                    .FirstAsync();
                 return Ok(profParMat);
             }
 
