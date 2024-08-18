@@ -38,6 +38,7 @@ namespace Arkance.Migrations
                         .HasColumnName("niveau");
 
                     b.Property<int?>("ProfesseurId")
+                        .IsRequired()
                         .HasColumnType("integer")
                         .HasColumnName("professeur_id");
 
@@ -59,6 +60,7 @@ namespace Arkance.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("ClasseId")
+                        .IsRequired()
                         .HasColumnType("integer")
                         .HasColumnName("classe_id");
 
@@ -116,10 +118,12 @@ namespace Arkance.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("EleveId")
+                        .IsRequired()
                         .HasColumnType("integer")
                         .HasColumnName("eleve_id");
 
                     b.Property<int?>("MatiereId")
+                        .IsRequired()
                         .HasColumnType("integer")
                         .HasColumnName("matiere_id");
 
@@ -135,6 +139,9 @@ namespace Arkance.Migrations
                     b.HasIndex(new[] { "EleveId", "MatiereId" }, "idx_note_eleve_id_matiere_id");
 
                     b.HasIndex(new[] { "MatiereId" }, "idx_note_matiere_id");
+
+                    b.HasIndex(new[] { "EleveId", "MatiereId" }, "note_eleve_id_matiere_id_key")
+                        .IsUnique();
 
                     b.ToTable("note", (string)null);
                 });
@@ -196,6 +203,7 @@ namespace Arkance.Migrations
                         .WithMany("Classes")
                         .HasForeignKey("ProfesseurId")
                         .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
                         .HasConstraintName("classe_professeur_id_fkey");
 
                     b.Navigation("Professeur");
@@ -207,6 +215,7 @@ namespace Arkance.Migrations
                         .WithMany("Eleves")
                         .HasForeignKey("ClasseId")
                         .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
                         .HasConstraintName("eleve_classe_id_fkey");
 
                     b.Navigation("Classe");
@@ -218,12 +227,14 @@ namespace Arkance.Migrations
                         .WithMany("Notes")
                         .HasForeignKey("EleveId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("note_eleve_id_fkey");
 
                     b.HasOne("Arkance.Models.Matiere", "Matiere")
                         .WithMany("Notes")
                         .HasForeignKey("MatiereId")
                         .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
                         .HasConstraintName("note_matiere_id_fkey");
 
                     b.Navigation("Eleve");

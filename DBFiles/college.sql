@@ -68,7 +68,7 @@ create table Note (
     id int primary key generated always as identity,
     valeur double precision check (valeur is null or (valeur between 0 and 20)),
     eleve_id int references Eleve (id) on delete cascade on update cascade,
-    matiere_id int references Matiere (id) on delete restrict on update restrict
+    matiere_id int references Matiere (id) on delete restrict on update restrict,
     unique (eleve_id, matiere_id)
 );
 

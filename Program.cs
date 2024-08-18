@@ -1,3 +1,4 @@
+using Arkance.Interface;
 using Arkance.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -28,6 +29,16 @@ using (var scope = app.Services.CreateScope())
     catch (Exception)
     {
         // Do nothing, migration has not been performed
+        //Console.WriteLine(ex.Message);
+    }
+
+    try
+    {
+        DbSeeder.Seed(db);
+    }
+    catch (Exception)
+    {
+        Console.WriteLine("Did not seed the database");
     }
 
 }

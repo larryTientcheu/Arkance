@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Arkance.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -46,7 +46,7 @@ namespace Arkance.Migrations
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn),
                     niveau = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    professeur_id = table.Column<int>(type: "integer", nullable: true)
+                    professeur_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -92,7 +92,7 @@ namespace Arkance.Migrations
                     nom = table.Column<string>(type: "text", nullable: false),
                     prenom = table.Column<string>(type: "text", nullable: false),
                     genre = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
-                    classe_id = table.Column<int>(type: "integer", nullable: true)
+                    classe_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -112,8 +112,8 @@ namespace Arkance.Migrations
                     id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityAlwaysColumn),
                     valeur = table.Column<double>(type: "double precision", nullable: true),
-                    eleve_id = table.Column<int>(type: "integer", nullable: true),
-                    matiere_id = table.Column<int>(type: "integer", nullable: true)
+                    eleve_id = table.Column<int>(type: "integer", nullable: false),
+                    matiere_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -156,6 +156,12 @@ namespace Arkance.Migrations
                 name: "idx_note_matiere_id",
                 table: "note",
                 column: "matiere_id");
+
+            migrationBuilder.CreateIndex(
+                name: "note_eleve_id_matiere_id_key",
+                table: "note",
+                columns: new[] { "eleve_id", "matiere_id" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "idx_professeur_matiere_matiere_id",

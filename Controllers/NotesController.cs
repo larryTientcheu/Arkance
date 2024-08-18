@@ -41,7 +41,7 @@ namespace Arkance.Controllers
             {
                 await context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
                 if (!NoteExists(id))
                 {
@@ -49,7 +49,7 @@ namespace Arkance.Controllers
                 }
                 else
                 {
-                    throw;
+                    return StatusCode(500, ex.InnerException?.Message); ;
                 }
             }
             catch (DbUpdateException ex)
@@ -89,16 +89,23 @@ namespace Arkance.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteNote(int id)
         {
-            var note = await context.Notes.FindAsync(id);
-            if (note == null)
+            try
             {
-                return NotFound();
+                var note = await context.Notes.FindAsync(id);
+                if (note == null)
+                {
+                    return NotFound();
+                }
+
+                context.Notes.Remove(note);
+                await context.SaveChangesAsync();
+
+                return NoContent();
             }
-
-            context.Notes.Remove(note);
-            await context.SaveChangesAsync();
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException?.Message);
+            }
         }
 
         private bool NoteExists(int id)

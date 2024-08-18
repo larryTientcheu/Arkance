@@ -1,4 +1,5 @@
 ﻿using System.Text.Json.Serialization;
+using System.ComponentModel.DataAnnotations;
 
 namespace Arkance.Models;
 
@@ -12,6 +13,7 @@ public partial class Eleve
 
     public string Genre { get; set; } = null!;
 
+    [Required(ErrorMessage = "The ClasseId field is required.")]
     public int? ClasseId { get; set; }
 
     [JsonIgnore]

@@ -55,7 +55,7 @@ namespace Arkance.Controllers
             {
                 await context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException e)
             {
                 if (!MatiereExists(id))
                 {
@@ -63,7 +63,7 @@ namespace Arkance.Controllers
                 }
                 else
                 {
-                    throw;
+                    return BadRequest(e.InnerException?.Message);
                 }
             }
 
@@ -90,8 +90,16 @@ namespace Arkance.Controllers
                 return NotFound();
             }
 
-            context.Matieres.Remove(matiere);
-            await context.SaveChangesAsync();
+            try
+            {
+                context.Matieres.Remove(matiere);
+                await context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.InnerException?.Message);
+            }
 
             return NoContent();
         }

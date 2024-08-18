@@ -45,7 +45,7 @@ namespace Arkance.Controllers
             {
                 await context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException e)
             {
                 if (!ProfesseurExists(id))
                 {
@@ -53,7 +53,7 @@ namespace Arkance.Controllers
                 }
                 else
                 {
-                    throw;
+                    return BadRequest(e.InnerException?.Message);
                 }
             }
 
@@ -64,8 +64,16 @@ namespace Arkance.Controllers
         [HttpPost]
         public async Task<ActionResult<Professeur>> PostProfesseur(Professeur professeur)
         {
-            context.Professeurs.Add(professeur);
-            await context.SaveChangesAsync();
+            try
+            {
+                context.Professeurs.Add(professeur);
+                await context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.InnerException?.Message);
+            }
 
             return CreatedAtAction("GetProfesseur", new { id = professeur.Id }, professeur);
         }
@@ -74,16 +82,23 @@ namespace Arkance.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteProfesseur(int id)
         {
-            var professeur = await context.Professeurs.FindAsync(id);
-            if (professeur == null)
+            try
             {
-                return NotFound();
+                var professeur = await context.Professeurs.FindAsync(id);
+                if (professeur == null)
+                {
+                    return NotFound();
+                }
+
+                context.Professeurs.Remove(professeur);
+                await context.SaveChangesAsync();
+
+                return NoContent();
             }
-
-            context.Professeurs.Remove(professeur);
-            await context.SaveChangesAsync();
-
-            return NoContent();
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.InnerException?.Message);
+            }
         }
 
         private bool ProfesseurExists(int id)

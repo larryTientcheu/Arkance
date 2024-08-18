@@ -31,8 +31,7 @@ namespace Arkance.Controllers
             {
                 var eleveParClass = await context.Classes
                     .Where(c => c.Id == id)
-                    .Include(c => c.Eleves)
-                    .Include(c => c.Professeur)
+                    .Include(c => c.Eleves)                 
                     .ToListAsync();
 
                 return Ok(eleveParClass);
@@ -52,7 +51,7 @@ namespace Arkance.Controllers
             {
                 await context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException e)
             {
                 if (!ClasseExists(id))
                 {
@@ -60,7 +59,7 @@ namespace Arkance.Controllers
                 }
                 else
                 {
-                    throw;
+                    return BadRequest(e.InnerException?.Message);
                 }
             }
 
@@ -71,8 +70,16 @@ namespace Arkance.Controllers
         [HttpPost]
         public async Task<ActionResult<Classe>> PostClasse(Classe classe)
         {
-            context.Classes.Add(classe);
-            await context.SaveChangesAsync();
+            try
+            {
+                context.Classes.Add(classe);
+                await context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.InnerException?.Message);
+            }
 
             return CreatedAtAction("GetClasse", new { id = classe.Id }, classe);
         }
@@ -87,8 +94,16 @@ namespace Arkance.Controllers
                 return NotFound();
             }
 
-            context.Classes.Remove(classe);
-            await context.SaveChangesAsync();
+            try
+            {
+                context.Classes.Remove(classe);
+                await context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.InnerException?.Message);
+            }
 
             return NoContent();
         }

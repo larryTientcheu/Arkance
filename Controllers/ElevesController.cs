@@ -62,7 +62,7 @@ namespace Arkance.Controllers
             {
                 await context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException e)
             {
                 if (!EleveExists(id))
                 {
@@ -70,7 +70,7 @@ namespace Arkance.Controllers
                 }
                 else
                 {
-                    throw;
+                    return BadRequest(e.InnerException?.Message);
                 }
             }
 
@@ -82,8 +82,16 @@ namespace Arkance.Controllers
         [HttpPost]
         public async Task<ActionResult<Eleve>> PostEleve(Eleve eleve)
         {
-            context.Eleves.Add(eleve);
-            await context.SaveChangesAsync();
+            try
+            {
+                context.Eleves.Add(eleve);
+                await context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.InnerException?.Message);
+            }
 
             return CreatedAtAction("GetEleve", new { id = eleve.Id }, eleve);
         }
@@ -98,8 +106,16 @@ namespace Arkance.Controllers
                 return NotFound();
             }
 
-            context.Eleves.Remove(eleve);
-            await context.SaveChangesAsync();
+            try
+            {
+                context.Eleves.Remove(eleve);
+                await context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.InnerException?.Message);
+            }
 
             return NoContent();
         }
