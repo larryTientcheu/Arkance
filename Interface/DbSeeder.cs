@@ -60,7 +60,7 @@ namespace Arkance.Interface
 
             // Seed Classes
             var classeList = new List<string>
-            { "Sixieme", "Cinquieme", "Quatrieme", "Troisieme", "Seconde", "Premiere", "Terminal" };
+            { "Sixième", "Cinquième", "Quatrième", "Troisième", "Seconde", "Première", "Terminal" };
 
             var classes = new List<Classe>();
             foreach (string classe in classeList)
