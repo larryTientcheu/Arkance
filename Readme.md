@@ -120,10 +120,12 @@ including teachers, classes, students, subjects, and course notes.
 
 2.Using Visual Studio
 
-* Set up the database using the Script `college.sql` provided in the folder `DBFiles`.
-  * **Optional :** Seed the database with randomized generated data using `test_data_college.sql`
+* Create a postgres database with the name of your choice
+  * **Optional :** Set up the database using the Script `college.sql` provided in the folder `DBFiles`.
+  * **Optional :** Seed the database with randomized generated data using `test_data_college.sql`.
+  * Database connection string is an environment variable called dbcon. Set It with the structure `dbcon="Server=localhost;Username=yourusername;Password=yourpassword;Database=databasename"` 
 * Install the packages in the prerequisite sections
-* Perform the migrations as explained in the database section below
+* Perform the migrations (`only if the migrations folder is absent`) as explained in the database section below
 * Run either using `http` or `https`.
 * The application listens on `http://localhost:5277/`
 
@@ -146,24 +148,21 @@ The database used is Postgres. The model definition has been retranscribed from 
 * You start by installing dotnet Entity Frameworke Core tools
 
                 `dotnet tool install --global dotnet-ef`
+* If Migrations are already present:
 
-* For scaffolding, importing an existing database using the EF
-  
-  ```CMD
-  dotnet ef dbcontext scaffold "Host=your_host;Database=your_database;Username=your_username;Password=your_password" Npgsql.EntityFrameworkCore.PostgreSQL -o Models
-  ```
-
-* Add a migration. This will generate the migration according to the database shcema defined in the file `ArkanceTestContext.cs`
+ * Add a migration. This will generate the migration according to the database shcema defined in the file `ArkanceTestContext.cs`
 
                 `dotnet ef migrations add <MigrationName>` 
 
-* To remove the migration use `ef migrations remove`
+ * To remove the migration use `ef migrations remove`
 
-* Anytime you modify or update the shema, a migration is performed automatically at the application startup or you can also do it manually wit
+ * Anytime you modify or update the shema, a migration is performed automatically at the application startup or you can also do it manually wit
 
                 `dotnet ef database update `
 
-* After the migration, for the first execution, the database is seeded with sample data
+ * After the migration, for the first execution, the database is seeded with sample data
+ 
+* If not, RUN the project directly using http or https. `dotnet run`
 
 ## 2. API Design
 

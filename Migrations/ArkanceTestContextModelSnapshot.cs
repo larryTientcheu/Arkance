@@ -118,7 +118,6 @@ namespace Arkance.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Appreciation")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int?>("EleveId")

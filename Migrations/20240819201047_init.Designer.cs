@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Arkance.Migrations
 {
     [DbContext(typeof(ArkanceTestContext))]
-    [Migration("20240818130945_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20240819201047_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -121,7 +121,6 @@ namespace Arkance.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityAlwaysColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Appreciation")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int?>("EleveId")

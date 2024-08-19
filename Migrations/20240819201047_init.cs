@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Arkance.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -114,7 +114,7 @@ namespace Arkance.Migrations
                     valeur = table.Column<double>(type: "double precision", nullable: true),
                     eleve_id = table.Column<int>(type: "integer", nullable: false),
                     matiere_id = table.Column<int>(type: "integer", nullable: false),
-                    Appreciation = table.Column<string>(type: "text", nullable: false)
+                    Appreciation = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
