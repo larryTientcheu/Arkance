@@ -14,6 +14,6 @@ jobs:
         run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
       - name: Run API tests
         run: |
-          postman collection run "${{ github.workspace }}/postman/collections/Arkance School API.json"
+          postman collection run "25226724-f6c5d9c3-0176-485b-a3db-4b508c43345f"
           # Lint your API using Postman CLI
           postman api lint 46399a7f-4a31-47fe-8a51-f85d3ddaaa2e
