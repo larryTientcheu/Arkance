@@ -1,0 +1,988 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 15.1
+-- Dumped by pg_dump version 15.1
+
+-- Started on 2024-08-19 22:24:48
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 3388 (class 1262 OID 116095)
+-- Name: arkance_seeded_db; Type: DATABASE; Schema: -; Owner: postgres
+--
+
+CREATE DATABASE arkance_seeded_db WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'English_United States.1252';
+
+
+ALTER DATABASE arkance_seeded_db OWNER TO postgres;
+
+\connect arkance_seeded_db
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 5 (class 2615 OID 140651)
+-- Name: public; Type: SCHEMA; Schema: -; Owner: postgres
+--
+
+-- *not* creating schema, since initdb creates it
+
+
+ALTER SCHEMA public OWNER TO postgres;
+
+--
+-- TOC entry 3389 (class 0 OID 0)
+-- Dependencies: 5
+-- Name: SCHEMA public; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON SCHEMA public IS '';
+
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 214 (class 1259 OID 140652)
+-- Name: __EFMigrationsHistory; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public."__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL
+);
+
+
+ALTER TABLE public."__EFMigrationsHistory" OWNER TO postgres;
+
+--
+-- TOC entry 220 (class 1259 OID 140674)
+-- Name: classe; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.classe (
+    id integer NOT NULL,
+    niveau character varying(50) NOT NULL,
+    professeur_id integer NOT NULL
+);
+
+
+ALTER TABLE public.classe OWNER TO postgres;
+
+--
+-- TOC entry 219 (class 1259 OID 140673)
+-- Name: classe_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.classe ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.classe_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 223 (class 1259 OID 140700)
+-- Name: eleve; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.eleve (
+    id integer NOT NULL,
+    nom text NOT NULL,
+    prenom text NOT NULL,
+    genre character varying(50) NOT NULL,
+    classe_id integer NOT NULL
+);
+
+
+ALTER TABLE public.eleve OWNER TO postgres;
+
+--
+-- TOC entry 222 (class 1259 OID 140699)
+-- Name: eleve_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.eleve ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.eleve_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 216 (class 1259 OID 140658)
+-- Name: matiere; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.matiere (
+    id integer NOT NULL,
+    nom text NOT NULL
+);
+
+
+ALTER TABLE public.matiere OWNER TO postgres;
+
+--
+-- TOC entry 215 (class 1259 OID 140657)
+-- Name: matiere_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.matiere ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.matiere_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 225 (class 1259 OID 140713)
+-- Name: note; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.note (
+    id integer NOT NULL,
+    valeur double precision,
+    eleve_id integer NOT NULL,
+    matiere_id integer NOT NULL,
+    "Appreciation" text
+);
+
+
+ALTER TABLE public.note OWNER TO postgres;
+
+--
+-- TOC entry 224 (class 1259 OID 140712)
+-- Name: note_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.note ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.note_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 218 (class 1259 OID 140666)
+-- Name: professeur; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.professeur (
+    id integer NOT NULL,
+    nom text NOT NULL,
+    prenom text NOT NULL,
+    genre character varying(50) NOT NULL
+);
+
+
+ALTER TABLE public.professeur OWNER TO postgres;
+
+--
+-- TOC entry 217 (class 1259 OID 140665)
+-- Name: professeur_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+ALTER TABLE public.professeur ALTER COLUMN id ADD GENERATED ALWAYS AS IDENTITY (
+    SEQUENCE NAME public.professeur_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1
+);
+
+
+--
+-- TOC entry 221 (class 1259 OID 140684)
+-- Name: professeur_matiere; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.professeur_matiere (
+    professeur_id integer NOT NULL,
+    matiere_id integer NOT NULL
+);
+
+
+ALTER TABLE public.professeur_matiere OWNER TO postgres;
+
+--
+-- TOC entry 3371 (class 0 OID 140652)
+-- Dependencies: 214
+-- Data for Name: __EFMigrationsHistory; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public."__EFMigrationsHistory" VALUES ('20240819201047_init', '8.0.8');
+
+
+--
+-- TOC entry 3377 (class 0 OID 140674)
+-- Dependencies: 220
+-- Data for Name: classe; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.classe OVERRIDING SYSTEM VALUE VALUES (1, 'Sixième', 5);
+INSERT INTO public.classe OVERRIDING SYSTEM VALUE VALUES (2, 'Cinquième', 4);
+INSERT INTO public.classe OVERRIDING SYSTEM VALUE VALUES (3, 'Quatrième', 2);
+INSERT INTO public.classe OVERRIDING SYSTEM VALUE VALUES (4, 'Troisième', 6);
+INSERT INTO public.classe OVERRIDING SYSTEM VALUE VALUES (5, 'Seconde', 2);
+INSERT INTO public.classe OVERRIDING SYSTEM VALUE VALUES (6, 'Première', 5);
+INSERT INTO public.classe OVERRIDING SYSTEM VALUE VALUES (7, 'Terminal', 5);
+
+
+--
+-- TOC entry 3380 (class 0 OID 140700)
+-- Dependencies: 223
+-- Data for Name: eleve; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (1, 'Deschamps', 'Girart', 'Female', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (2, 'Nguyen', 'Flore', 'Male', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (3, 'Hubert', 'Bérangère', 'Male', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (4, 'Berger', 'Nathalie', 'Female', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (5, 'Dupont', 'Christian', 'Male', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (6, 'Lemoine', 'Alaine', 'Male', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (7, 'Guillaume', 'Caroline', 'Female', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (8, 'Paul', 'Philippe', 'Male', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (9, 'Dubois', 'Francia', 'Male', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (10, 'Noel', 'Jérémie', 'Female', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (11, 'Julien', 'Élisée', 'Female', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (12, 'Denis', 'Lucas', 'Female', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (13, 'Henry', 'Adhémar', 'Male', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (14, 'Dufour', 'Pécine', 'Female', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (15, 'Prevost', 'Mayeul', 'Female', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (16, 'Fournier', 'Jason', 'Male', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (17, 'Paris', 'Agnès', 'Female', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (18, 'Pons', 'Barbe', 'Female', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (19, 'Duval', 'Axeline', 'Female', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (20, 'Marchand', 'Pascal', 'Male', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (21, 'Richard', 'Tiphaine', 'Male', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (22, 'Mercier', 'Herluin', 'Male', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (23, 'Picard', 'Coralie', 'Male', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (24, 'Olivier', 'Armide', 'Male', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (25, 'Blanc', 'Alice', 'Male', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (26, 'Nguyen', 'Agathe', 'Male', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (27, 'Richard', 'Vigile', 'Male', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (28, 'Lefebvre', 'Sébastien', 'Male', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (29, 'Lecomte', 'Brunehilde', 'Female', 1);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (30, 'Laine', 'Nine', 'Female', 2);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (31, 'Laine', 'Sidoine', 'Male', 2);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (32, 'Pierre', 'Naudet', 'Male', 2);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (33, 'Petit', 'Odile', 'Female', 2);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (34, 'Huet', 'Rodrigue', 'Female', 2);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (35, 'Meunier', 'Valéry', 'Female', 2);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (36, 'Dufour', 'Jacqueline', 'Male', 3);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (37, 'Lambert', 'Arthème', 'Female', 3);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (38, 'Rey', 'Ameline', 'Male', 3);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (39, 'Fabre', 'Odon', 'Female', 3);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (40, 'Denis', 'Barnabé', 'Male', 3);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (41, 'Mercier', 'Iris', 'Male', 3);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (42, 'Le roux', 'Blanche', 'Male', 3);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (43, 'Rolland', 'Alexanne', 'Female', 3);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (44, 'Prevost', 'Alverède', 'Male', 4);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (45, 'Lefebvre', 'Emmanuelle', 'Female', 4);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (46, 'Julien', 'Julien', 'Male', 4);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (47, 'Marchand', 'Amandin', 'Male', 4);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (48, 'Schmitt', 'Rodrigue', 'Female', 4);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (49, 'Le roux', 'Loup', 'Male', 4);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (50, 'Adam', 'Zacharie', 'Female', 4);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (51, 'Simon', 'Françoise', 'Female', 4);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (52, 'Legrand', 'Agilberte', 'Male', 4);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (53, 'Deschamps', 'Paul', 'Male', 4);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (54, 'Caron', 'Anaëlle', 'Male', 4);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (55, 'Perez', 'Laureline', 'Female', 4);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (56, 'Charpentier', 'Charlaine', 'Female', 4);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (57, 'Remy', 'Alcidie', 'Female', 4);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (58, 'Meunier', 'Almine', 'Male', 5);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (59, 'Garcia', 'Tancrède', 'Female', 5);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (60, 'Duval', 'Pascal', 'Female', 5);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (61, 'Riviere', 'Aurélie', 'Female', 5);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (62, 'Lacroix', 'Sandrine', 'Female', 5);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (63, 'Lemaire', 'Abraham', 'Female', 5);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (64, 'Paris', 'Agilberte', 'Male', 5);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (65, 'Leclerc', 'Antide', 'Male', 5);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (66, 'Bernard', 'Chrysostome', 'Male', 5);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (67, 'Leclercq', 'Suzon', 'Female', 5);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (68, 'Simon', 'Léna', 'Male', 5);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (69, 'Noel', 'Emmanuelle', 'Male', 5);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (70, 'Meyer', 'Marie', 'Male', 5);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (71, 'Lecomte', 'Gédéon', 'Female', 5);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (72, 'Richard', 'Agneflète', 'Male', 5);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (73, 'Garnier', 'Julie', 'Male', 5);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (74, 'Meyer', 'Paulette', 'Male', 5);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (75, 'Lopez', 'Blaise', 'Male', 5);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (76, 'Nguyen', 'Matthieu', 'Male', 5);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (77, 'Perrin', 'Clémence', 'Male', 5);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (78, 'Fernandez', 'Jocelyn', 'Female', 5);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (79, 'Riviere', 'Angélique', 'Female', 6);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (80, 'Philippe', 'Judicaël', 'Male', 6);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (81, 'Roger', 'Marine', 'Male', 6);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (82, 'Dupuy', 'Flavie', 'Male', 7);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (83, 'Renaud', 'Argine', 'Male', 7);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (84, 'Baron', 'Brice', 'Female', 7);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (85, 'Lacroix', 'Adegrine', 'Male', 7);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (86, 'Dumas', 'Mégane', 'Male', 7);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (87, 'Henry', 'Blanche', 'Female', 7);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (88, 'Rolland', 'Innocent', 'Female', 7);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (89, 'Rodriguez', 'Régine', 'Male', 7);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (90, 'Carre', 'Liétald', 'Female', 7);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (91, 'Perez', 'Amalric', 'Male', 7);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (92, 'Berger', 'Nathalie', 'Male', 7);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (93, 'Meunier', 'Mathurin', 'Female', 7);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (94, 'Roy', 'Pépin', 'Male', 7);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (95, 'Renaud', 'Guenièvre', 'Male', 7);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (96, 'Moulin', 'Anémone', 'Female', 7);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (97, 'Vincent', 'Camillien', 'Female', 7);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (98, 'Carpentier', 'Adonis', 'Male', 7);
+INSERT INTO public.eleve OVERRIDING SYSTEM VALUE VALUES (99, 'Dupont', 'Catherine', 'Female', 7);
+
+
+--
+-- TOC entry 3373 (class 0 OID 140658)
+-- Dependencies: 216
+-- Data for Name: matiere; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.matiere OVERRIDING SYSTEM VALUE VALUES (1, 'Math');
+INSERT INTO public.matiere OVERRIDING SYSTEM VALUE VALUES (2, 'Physique');
+INSERT INTO public.matiere OVERRIDING SYSTEM VALUE VALUES (3, 'Chimie');
+INSERT INTO public.matiere OVERRIDING SYSTEM VALUE VALUES (4, 'Biologie');
+INSERT INTO public.matiere OVERRIDING SYSTEM VALUE VALUES (5, 'Histoire');
+
+
+--
+-- TOC entry 3382 (class 0 OID 140713)
+-- Dependencies: 225
+-- Data for Name: note; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (1, 17.772782972934035, 1, 5, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (2, 17.53256607251179, 1, 2, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (3, 6.104598699285047, 1, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (4, 12.065875159625598, 1, 1, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (5, 13.749077820865159, 2, 1, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (6, 16.658463835062484, 2, 2, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (7, 5.714294297339206, 2, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (8, 2.4114701833966534, 2, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (9, 6.545790832686924, 3, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (10, 5.387233485632239, 3, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (11, 9.651059282615318, 4, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (12, 2.543244575340735, 5, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (13, 12.279471499833729, 5, 1, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (14, 1.187588591499844, 5, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (15, 16.107277539773275, 6, 1, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (16, 5.227066675856154, 6, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (17, 18.321747992256086, 6, 5, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (18, 19.687410925407892, 7, 2, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (19, 4.659909120577663, 7, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (20, 18.30879578754053, 7, 5, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (21, 6.321254307049633, 7, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (22, 17.317330897742085, 7, 1, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (23, 19.484272944372425, 8, 3, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (24, 12.229607655156777, 8, 1, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (25, 3.339097420154824, 8, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (26, 13.908955477031853, 8, 2, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (27, 4.733690782532327, 9, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (28, 15.213167120663424, 9, 5, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (29, 5.136783194984824, 9, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (30, 2.1293473259812123, 9, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (31, 6.129793961056665, 10, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (32, 3.430217318963835, 11, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (33, 17.678963086364433, 11, 4, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (34, 7.1513216371091275, 12, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (35, 1.9380072565495121, 12, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (36, 13.892743727102648, 12, 1, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (37, 16.833209064850823, 12, 3, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (38, 13.487995297295328, 13, 2, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (39, 15.92957359693279, 14, 2, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (40, 3.6329025165499673, 14, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (41, 12.268549181489306, 14, 4, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (42, 5.354579618574253, 14, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (43, 16.02875803080024, 14, 1, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (44, 0.5152671010683174, 15, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (45, 2.274654133237264, 16, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (46, 7.768360257636992, 16, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (47, 1.3740208188008718, 16, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (48, 13.977915078805276, 17, 1, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (49, 18.031702933031404, 17, 4, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (50, 8.944986603129765, 17, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (51, 15.66922568606119, 17, 3, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (52, 18.050808311194828, 17, 2, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (53, 6.6221143681829915, 18, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (54, 4.515357092732111, 18, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (55, 11.31642908653874, 18, 5, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (56, 2.815734765034188, 18, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (57, 4.282975509270854, 18, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (58, 18.16838104564201, 19, 5, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (59, 17.91275128538129, 19, 1, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (60, 12.16843593088768, 19, 4, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (61, 9.713597728592664, 19, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (62, 10.971227689193217, 20, 5, 'Pas de note disponible');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (63, 15.397553844889895, 21, 1, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (64, 16.578158461054365, 21, 4, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (65, 11.68476444513078, 21, 5, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (66, 6.973189041586894, 21, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (67, 8.581337734691612, 21, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (68, 2.329159293769618, 22, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (69, 0.9911547339349935, 22, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (70, 8.990477199077924, 22, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (71, 3.383445755569632, 22, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (72, 12.38468114466301, 23, 2, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (73, 13.566762771324397, 23, 4, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (74, 4.113254111970006, 24, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (75, 2.3679467224696515, 24, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (76, 17.093384397462547, 25, 5, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (77, 2.245190892584703, 25, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (78, 5.017563973072705, 25, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (79, 8.845464367280535, 26, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (80, 7.012164950864539, 26, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (81, 7.15987682281378, 26, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (82, 0.5381373615614549, 27, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (83, 10.848316142613646, 27, 4, 'Pas de note disponible');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (84, 7.049268122549077, 27, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (85, 2.5195586807431014, 27, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (86, 8.323431721170039, 28, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (87, 14.901718825184975, 28, 5, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (88, 13.036460209292853, 28, 2, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (89, 18.607396696665607, 29, 4, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (90, 9.288539057814571, 29, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (91, 18.467462907921522, 30, 5, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (92, 13.091434660805524, 30, 2, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (93, 13.796686123857757, 30, 4, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (94, 8.86043515080682, 31, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (95, 0.712558138885655, 31, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (96, 10.951341508726184, 32, 5, 'Pas de note disponible');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (97, 6.760497670720533, 32, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (98, 4.347015975703408, 32, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (99, 19.605414255869245, 32, 1, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (100, 18.55142856737205, 33, 2, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (101, 11.884983680488011, 33, 5, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (102, 4.265283169230239, 34, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (103, 11.224971817402668, 34, 3, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (104, 10.30515147583298, 34, 2, 'Pas de note disponible');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (105, 9.154643055554013, 35, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (106, 18.118593443098398, 35, 2, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (107, 6.499775916522246, 35, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (108, 3.013114139845776, 36, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (109, 5.429222731636609, 36, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (110, 17.76962666767539, 37, 5, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (111, 7.9517813474669445, 37, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (112, 2.6382719683589273, 37, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (113, 16.314644326558557, 37, 2, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (114, 0.527082464001265, 38, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (115, 10.155704419199338, 38, 3, 'Pas de note disponible');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (116, 12.616545476915253, 38, 1, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (117, 1.7507488867322452, 38, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (118, 11.65231053252307, 39, 2, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (119, 0.03956949346662242, 39, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (120, 4.471401212345459, 39, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (121, 6.621643321687689, 39, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (122, 3.151849749094078, 40, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (123, 11.64950672489844, 40, 4, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (124, 1.918797065803599, 41, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (125, 1.418438330678562, 41, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (126, 15.156264194619517, 41, 4, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (127, 16.29592612220451, 41, 2, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (128, 19.012474163904102, 41, 5, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (129, 7.92917756784237, 42, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (130, 8.924955525972635, 42, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (131, 12.855215138096913, 42, 2, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (132, 15.183462639736625, 42, 4, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (133, 5.281956092928997, 42, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (134, 19.932297557457456, 43, 1, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (135, 7.299045188456579, 43, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (136, 17.334987627809603, 43, 2, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (137, 18.59944332075496, 43, 5, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (138, 16.83873915378825, 43, 3, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (139, 11.435395172327961, 44, 3, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (140, 2.387575342703576, 44, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (141, 1.7152148493256947, 44, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (142, 5.831961085997424, 44, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (143, 15.539858710676487, 45, 2, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (144, 0.2757706958872763, 45, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (145, 14.117801526403555, 45, 1, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (146, 5.559997116272939, 46, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (147, 11.810873508516446, 46, 3, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (148, 11.159770892424646, 47, 3, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (149, 9.029250119440324, 48, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (150, 3.822418256164788, 48, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (151, 17.460142157198778, 48, 5, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (152, 10.288616516660401, 49, 1, 'Pas de note disponible');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (153, 5.871187076779078, 49, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (154, 15.069420222580266, 50, 4, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (155, 4.79949231124473, 50, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (156, 4.743267341326797, 50, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (157, 19.516139969391862, 50, 2, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (158, 3.8152549909493683, 50, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (159, 8.248329339983494, 51, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (160, 4.049624758035922, 52, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (161, 0.1641517937394532, 52, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (162, 4.917981365350361, 52, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (163, 9.681623553538197, 52, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (164, 5.754109759693662, 53, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (165, 9.498120575353914, 53, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (166, 1.2273632488283992, 54, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (167, 15.245997145028248, 54, 3, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (168, 19.618894268216497, 55, 2, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (169, 3.2817758985562873, 55, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (170, 9.022928905079077, 55, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (171, 13.796965793286414, 55, 4, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (172, 7.267675481142124, 55, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (173, 13.511433671304419, 56, 2, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (174, 6.374889663791274, 56, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (175, 5.4916219510676445, 56, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (176, 12.226577543597886, 57, 5, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (177, 3.01330246659288, 57, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (178, 7.620967782421635, 57, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (179, 13.153533093160263, 58, 2, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (180, 9.411779314309994, 59, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (181, 7.429142172382932, 59, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (182, 11.247362032763842, 60, 4, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (183, 1.3004933920250816, 60, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (184, 14.007647276111538, 61, 5, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (185, 10.429624780051903, 61, 4, 'Pas de note disponible');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (186, 18.390479035615495, 61, 3, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (187, 15.200959055704113, 61, 2, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (188, 15.268896348072637, 62, 5, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (189, 19.345958743288474, 62, 2, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (190, 0.11729743391328373, 62, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (191, 11.708797150892426, 62, 1, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (192, 2.451128910810887, 62, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (193, 5.6542818404375765, 63, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (194, 7.034893048069895, 63, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (195, 18.69848372594079, 64, 1, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (196, 0.5141131059000759, 64, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (197, 16.599080152448025, 64, 2, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (198, 17.10011947044071, 64, 4, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (199, 6.135292671679871, 65, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (200, 6.2893962903889555, 66, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (201, 15.13374286219005, 67, 4, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (202, 3.1574249294063272, 67, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (203, 16.960550195099614, 67, 5, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (204, 11.881932905507153, 68, 5, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (205, 10.358673361269773, 68, 3, 'Pas de note disponible');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (206, 6.432818812655117, 68, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (207, 1.162622306285992, 68, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (208, 11.645932307079864, 68, 4, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (209, 12.847248450833568, 69, 1, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (210, 10.57891395569575, 69, 2, 'Pas de note disponible');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (211, 18.863851771178105, 69, 5, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (212, 13.863688330009447, 69, 3, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (213, 14.140520692540408, 69, 4, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (214, 14.386531305563672, 70, 1, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (215, 12.004311840140339, 70, 5, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (216, 3.0860546183361626, 70, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (217, 3.0309802948563602, 71, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (218, 8.11688370060342, 71, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (219, 6.454665187203357, 72, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (220, 7.770352753587133, 72, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (221, 18.128722381620225, 72, 2, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (222, 6.045571687137565, 73, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (223, 10.94356006798683, 73, 5, 'Pas de note disponible');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (224, 12.849024070213309, 73, 1, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (225, 16.821318044676584, 73, 4, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (226, 19.993223047390256, 73, 2, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (227, 11.553245427460082, 74, 5, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (228, 4.610423000249224, 74, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (229, 3.833218087306185, 75, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (230, 19.57129341639333, 75, 3, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (231, 8.004952421054082, 75, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (232, 11.119173718779749, 75, 2, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (233, 0.8138372787624726, 76, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (234, 18.928925029026754, 76, 1, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (235, 12.064340218104162, 76, 4, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (236, 4.79283663044254, 76, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (237, 0.3134661224417479, 76, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (238, 11.357005575607829, 77, 2, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (239, 6.532694369098307, 77, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (240, 4.937987646954436, 77, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (241, 9.558182511430246, 77, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (242, 1.909624322088106, 77, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (243, 18.80324243675623, 78, 2, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (244, 6.9046043045602605, 78, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (245, 12.505002166728591, 78, 5, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (246, 9.603110920689756, 79, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (247, 0.6394743476967424, 79, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (248, 8.703154207437196, 79, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (249, 6.103102442395887, 80, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (250, 4.261892248168307, 80, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (251, 8.906610082703331, 80, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (252, 7.916223071822945, 80, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (253, 16.7664667229787, 80, 1, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (254, 7.964535789734779, 81, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (255, 12.018999718722046, 81, 3, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (256, 5.90305747949426, 81, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (257, 18.6370595656804, 81, 5, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (258, 0.24461924466565144, 82, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (259, 8.410508258406983, 82, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (260, 5.975234911644289, 82, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (261, 8.538377765739686, 82, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (262, 13.146507554940719, 83, 5, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (263, 8.533963019028942, 83, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (264, 8.208786229212254, 84, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (265, 13.33211729739186, 84, 5, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (266, 6.34570674497136, 84, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (267, 5.14248134860879, 85, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (268, 11.753370180213738, 85, 3, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (269, 16.783059301051953, 85, 2, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (270, 9.496007229212148, 85, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (271, 5.022103779901377, 86, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (272, 15.511120317056456, 86, 2, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (273, 6.80254249932557, 87, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (274, 2.5815790490598145, 87, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (275, 1.5983578715977065, 87, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (276, 4.409503868812723, 87, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (277, 0.6531560441749296, 88, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (278, 18.70441525081993, 88, 2, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (279, 7.2285261920361465, 89, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (280, 17.81196747650021, 90, 4, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (281, 19.39002749037368, 91, 2, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (282, 0.7128636538777022, 91, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (283, 8.3431794228222, 91, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (284, 5.544223106641775, 92, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (285, 5.118077716203904, 92, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (286, 17.255230248887393, 92, 4, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (287, 15.222772244460334, 92, 2, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (288, 12.073476319940927, 93, 4, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (289, 8.133055676949194, 93, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (290, 19.55471100000767, 94, 5, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (291, 17.19809381320951, 95, 1, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (292, 1.0867454162402912, 95, 5, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (293, 12.11879694720442, 95, 4, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (294, 1.7642904917514035, 95, 3, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (295, 2.3261980374491475, 96, 2, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (296, 2.2139891318723603, 96, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (297, 11.45993017211981, 96, 5, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (298, 9.855135994178942, 96, 1, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (299, 10.78989954681165, 97, 3, 'Pas de note disponible');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (300, 3.525829809886789, 98, 4, 'Peut faire mieux');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (301, 12.805127877673767, 99, 5, 'Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (302, 10.222086006756722, 99, 1, 'Pas de note disponible');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (303, 17.982582290423508, 99, 2, 'Très Bien');
+INSERT INTO public.note OVERRIDING SYSTEM VALUE VALUES (304, 12.541790105025484, 99, 3, 'Bien');
+
+
+--
+-- TOC entry 3375 (class 0 OID 140666)
+-- Dependencies: 218
+-- Data for Name: professeur; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (1, 'Guillot', 'Paterne', 'Female');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (2, 'Riviere', 'Éric', 'Female');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (3, 'Giraud', 'Argine', 'Male');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (4, 'Le gall', 'Hilaire', 'Female');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (5, 'Roux', 'Archange', 'Male');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (6, 'Hubert', 'Sabine', 'Male');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (7, 'Adam', 'Gabin', 'Female');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (8, 'Henry', 'Béatrice', 'Female');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (9, 'Blanc', 'Yseult', 'Male');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (10, 'Perrin', 'Armand', 'Male');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (11, 'Faure', 'Irina', 'Male');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (12, 'Barre', 'Libère', 'Female');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (13, 'Fabre', 'Rémi', 'Male');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (14, 'Chevalier', 'Arielle', 'Male');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (15, 'Rey', 'Odette', 'Female');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (16, 'Guillot', 'Adalard', 'Male');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (17, 'Laurent', 'Baudouin', 'Female');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (18, 'Schneider', 'Alix', 'Male');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (19, 'Roussel', 'Dieudonnée', 'Male');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (20, 'Martin', 'Adeline', 'Male');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (21, 'Marty', 'Rolande', 'Female');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (22, 'Lemaire', 'Ludovic', 'Male');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (23, 'Renault', 'Bon', 'Male');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (24, 'Robin', 'Bernadette', 'Female');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (25, 'Pons', 'Marine', 'Female');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (26, 'Caron', 'Urbain', 'Male');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (27, 'Perrin', 'Antide', 'Male');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (28, 'Perrin', 'Athanasie', 'Male');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (29, 'Huet', 'Quiéta', 'Female');
+INSERT INTO public.professeur OVERRIDING SYSTEM VALUE VALUES (30, 'Riviere', 'Loup', 'Male');
+
+
+--
+-- TOC entry 3378 (class 0 OID 140684)
+-- Dependencies: 221
+-- Data for Name: professeur_matiere; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+INSERT INTO public.professeur_matiere VALUES (1, 5);
+INSERT INTO public.professeur_matiere VALUES (15, 2);
+INSERT INTO public.professeur_matiere VALUES (25, 2);
+INSERT INTO public.professeur_matiere VALUES (28, 1);
+
+
+--
+-- TOC entry 3391 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: classe_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.classe_id_seq', 7, true);
+
+
+--
+-- TOC entry 3392 (class 0 OID 0)
+-- Dependencies: 222
+-- Name: eleve_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.eleve_id_seq', 99, true);
+
+
+--
+-- TOC entry 3393 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: matiere_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.matiere_id_seq', 5, true);
+
+
+--
+-- TOC entry 3394 (class 0 OID 0)
+-- Dependencies: 224
+-- Name: note_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.note_id_seq', 304, true);
+
+
+--
+-- TOC entry 3395 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: professeur_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.professeur_id_seq', 30, true);
+
+
+--
+-- TOC entry 3202 (class 2606 OID 140656)
+-- Name: __EFMigrationsHistory PK___EFMigrationsHistory; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public."__EFMigrationsHistory"
+    ADD CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId");
+
+
+--
+-- TOC entry 3208 (class 2606 OID 140678)
+-- Name: classe classe_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.classe
+    ADD CONSTRAINT classe_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3215 (class 2606 OID 140706)
+-- Name: eleve eleve_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.eleve
+    ADD CONSTRAINT eleve_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3204 (class 2606 OID 140664)
+-- Name: matiere matiere_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.matiere
+    ADD CONSTRAINT matiere_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3222 (class 2606 OID 140719)
+-- Name: note note_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.note
+    ADD CONSTRAINT note_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3213 (class 2606 OID 140688)
+-- Name: professeur_matiere professeur_matiere_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.professeur_matiere
+    ADD CONSTRAINT professeur_matiere_pkey PRIMARY KEY (professeur_id, matiere_id);
+
+
+--
+-- TOC entry 3206 (class 2606 OID 140672)
+-- Name: professeur professeur_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.professeur
+    ADD CONSTRAINT professeur_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 3209 (class 1259 OID 140730)
+-- Name: idx_classe_professeur_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_classe_professeur_id ON public.classe USING btree (professeur_id);
+
+
+--
+-- TOC entry 3216 (class 1259 OID 140731)
+-- Name: idx_eleve_classe_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_eleve_classe_id ON public.eleve USING btree (classe_id);
+
+
+--
+-- TOC entry 3217 (class 1259 OID 140732)
+-- Name: idx_note_eleve_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_note_eleve_id ON public.note USING btree (eleve_id);
+
+
+--
+-- TOC entry 3218 (class 1259 OID 140733)
+-- Name: idx_note_eleve_id_matiere_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_note_eleve_id_matiere_id ON public.note USING btree (eleve_id, matiere_id);
+
+
+--
+-- TOC entry 3219 (class 1259 OID 140734)
+-- Name: idx_note_matiere_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_note_matiere_id ON public.note USING btree (matiere_id);
+
+
+--
+-- TOC entry 3210 (class 1259 OID 140736)
+-- Name: idx_professeur_matiere_matiere_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_professeur_matiere_matiere_id ON public.professeur_matiere USING btree (matiere_id);
+
+
+--
+-- TOC entry 3211 (class 1259 OID 140737)
+-- Name: idx_professeur_matiere_professeur_id; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE INDEX idx_professeur_matiere_professeur_id ON public.professeur_matiere USING btree (professeur_id);
+
+
+--
+-- TOC entry 3220 (class 1259 OID 140735)
+-- Name: note_eleve_id_matiere_id_key; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX note_eleve_id_matiere_id_key ON public.note USING btree (eleve_id, matiere_id);
+
+
+--
+-- TOC entry 3223 (class 2606 OID 140679)
+-- Name: classe classe_professeur_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.classe
+    ADD CONSTRAINT classe_professeur_id_fkey FOREIGN KEY (professeur_id) REFERENCES public.professeur(id) ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 3226 (class 2606 OID 140707)
+-- Name: eleve eleve_classe_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.eleve
+    ADD CONSTRAINT eleve_classe_id_fkey FOREIGN KEY (classe_id) REFERENCES public.classe(id) ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 3227 (class 2606 OID 140720)
+-- Name: note note_eleve_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.note
+    ADD CONSTRAINT note_eleve_id_fkey FOREIGN KEY (eleve_id) REFERENCES public.eleve(id) ON DELETE CASCADE;
+
+
+--
+-- TOC entry 3228 (class 2606 OID 140725)
+-- Name: note note_matiere_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.note
+    ADD CONSTRAINT note_matiere_id_fkey FOREIGN KEY (matiere_id) REFERENCES public.matiere(id) ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 3224 (class 2606 OID 140689)
+-- Name: professeur_matiere professeur_matiere_matiere_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.professeur_matiere
+    ADD CONSTRAINT professeur_matiere_matiere_id_fkey FOREIGN KEY (matiere_id) REFERENCES public.matiere(id) ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 3225 (class 2606 OID 140694)
+-- Name: professeur_matiere professeur_matiere_professeur_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.professeur_matiere
+    ADD CONSTRAINT professeur_matiere_professeur_id_fkey FOREIGN KEY (professeur_id) REFERENCES public.professeur(id) ON DELETE RESTRICT;
+
+
+--
+-- TOC entry 3390 (class 0 OID 0)
+-- Dependencies: 5
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE USAGE ON SCHEMA public FROM PUBLIC;
+
+
+-- Completed on 2024-08-19 22:24:48
+
+--
+-- PostgreSQL database dump complete
+--
+

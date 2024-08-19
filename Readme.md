@@ -81,7 +81,7 @@ including teachers, classes, students, subjects, and course notes.
 ## Getting Started
 
 * The project is built using ASP.NET 8.0 Core framework. I have used the Entity Framework Core for database access. It follows a RESTful API design pattern and provides various enpoints for accessing the different resources.
-* [Swagger documentation]() and [Postman Collection documentation is available]()
+* [Swagger documentation](https://arkance-production.up.railway.app/swagger/index.html) and [Postman Collection documentation is available](https://www.postman.com/blue-escape-747867/workspace/arkance/documentation/25226724-01c53be4-4d11-4408-a994-4a214fffe65a)
 
 ## Prerequisite
 
@@ -113,16 +113,17 @@ including teachers, classes, students, subjects, and course notes.
 ## How to Run
 
 1. This project is deployed online on this [Backend-API link](https://arkance-production.up.railway.app) 
- * With [swager docs](https://arkance-production.up.railway.app/swagger/index.html)
 2. Using Docker
    * The project can be run easily using `docker-compose up --build`
    * To stop you can use `docker-compose down` 
 
-2.Using Visual Studio
+3. Using Visual Studio
 
-* Create a postgres database with the name of your choice
+* **Choose :** Use the database dump `dump.sql` in the folder `DBFiles`. 
+* **Choose :** Create a postgres database with the name of your choice
   * **Optional :** Set up the database using the Script `college.sql` provided in the folder `DBFiles`.
   * **Optional :** Seed the database with randomized generated data using `test_data_college.sql`.
+* If optional steps were skiped, database will be seeded with randomized data automatically as the data in database dump `dump.sql` file
   * Database connection string is an environment variable called dbcon. Set It with the structure `dbcon="Server=localhost;Username=yourusername;Password=yourpassword;Database=databasename"` 
 * Install the packages in the prerequisite sections
 * Perform the migrations (`only if the migrations folder is absent`) as explained in the database section below
