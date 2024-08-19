@@ -7,6 +7,11 @@ This is a School Management System API! This project aims to
 provide an efficient and flexible API for managing various aspects of a school,
 including teachers, classes, students, subjects, and course notes.
 
+## App access
+
+- Local: https://github.com/larryTientcheu/arkance-frontend
+- Production: https://arkance-frontend.vercel.app/
+
 ## API access 
 
 - Local: http://localhost:5277/
