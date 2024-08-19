@@ -15,6 +15,5 @@ public partial class Classe
 
     public virtual ICollection<Eleve> Eleves { get; } = new List<Eleve>();
 
-    [JsonIgnore]
     public virtual Professeur? Professeur { get; }
 }

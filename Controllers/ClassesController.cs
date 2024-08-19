@@ -13,7 +13,9 @@ namespace Arkance.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Classe>>> GetClasses()
         {
-            return await context.Classes.ToListAsync();
+            return await context.Classes
+                .Include(p => p.Professeur)
+                .ToListAsync();
         }
 
         // TODO: Lister les élèves par classe.
@@ -21,7 +23,10 @@ namespace Arkance.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetClasse(int id, [FromQuery] bool eleves)
         {
-            var classe = await context.Classes.FindAsync(id);
+            var classe = await context.Classes
+                .Where(c => c.Id == id)
+                .Include(p => p.Professeur)
+                .FirstAsync();
 
             if (classe == null)
             {
@@ -32,6 +37,7 @@ namespace Arkance.Controllers
                 var eleveParClass = await context.Classes
                     .Where(c => c.Id == id)
                     .Include(c => c.Eleves)
+                    .Include(p => p.Professeur)
                     .FirstAsync();
 
                 return Ok(eleveParClass);

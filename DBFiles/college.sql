@@ -83,4 +83,3 @@ create  index idx_note_matiere_id on Note (
 matiere_id
 );
 
-

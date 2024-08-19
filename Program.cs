@@ -52,6 +52,10 @@ if (app.Environment.IsDevelopment() || app.Environment.IsStaging())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseCors(builder =>
+    builder.WithOrigins("*")
+    .AllowAnyMethod()
+    .AllowAnyHeader());
 }
 
 // Redirect root to Swagger UI

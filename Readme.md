@@ -11,10 +11,11 @@ including teachers, classes, students, subjects, and course notes.
 * Swagger documentation and [Postman Collection documentation is available]()
 
 ## Prerequisite
-* This is the schema of the database. This will help you in better understanding the structure of the project
+* This is the schema of the database. This will help you in better understanding the structure of the API
 
-* ![Class Diagram](DBFile/classDiagram.png?raw=true "Class Diagram")
-* * Visual Studio 2022.
+* ![Class Diagram](DBFiles/classDiagramOOM.png?raw=true "Conceptual Class Diagram")
+* ![Database Schema](DBFiles/dbSchema.png?raw=true "Database Schema")
+* **Visual Studio 2022.**
 
 * [Overview of Entity Framework Core - EF Core | Microsoft Learn](https://learn.microsoft.com/en-us/ef/core/)
 
@@ -123,6 +124,7 @@ The database used is Postgres. The model definition has been retranscribed from 
   * `matiereId` (integer, format: int32): The ID of the subject associated with the course note.
   * `eleveId` (integer, format: int32): The ID of the student associated with the course note.
   * `valeur` (number, format: double, range[0,20]): The mark for the course note.
+  * `appreciation` (Insight based on note value)
 
 ### EndPoints
 * The endpoints listed here are the ones required for this exercise, The complete documentation of the endpoints can be found on [Postman Collection Documentation]()
