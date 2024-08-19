@@ -82,7 +82,7 @@ including teachers, classes, students, subjects, and course notes.
 
 * This is the schema of the database. This will help you in better understanding the structure of the API
 
-* ![Class Diagram](DBFiles/classDiagramOOM.png?raw=true "Conceptual Class Diagram")
+* ![Class Diagram](DBFiles/ClassDiagramOOM.png?raw=true "Conceptual Class Diagram")
 
 * ![Database Schema](DBFiles/dbSchema.png?raw=true "Database Schema")
 
