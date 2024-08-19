@@ -19,7 +19,7 @@ namespace Arkance.Controllers
         // TODO: Lister les professeurs par matière enseignée.
         // GET: api/Matieres/5?professeurs=:=bool
         [HttpGet("{id}")]
-        public async Task<ActionResult<Matiere>> GetMatiere(int id, [FromQuery] bool professeurs, bool eleves)
+        public async Task<ActionResult<Matiere>> GetMatiere(int id, [FromQuery] bool professeurs)
         {
             var matiere = await context.Matieres.FindAsync(id);
 
@@ -74,8 +74,17 @@ namespace Arkance.Controllers
         [HttpPost]
         public async Task<ActionResult<Matiere>> PostMatiere(Matiere matiere)
         {
-            context.Matieres.Add(matiere);
-            await context.SaveChangesAsync();
+            try
+            {
+                
+                context.Matieres.Add(matiere);
+                await context.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.InnerException?.Message);
+            }
 
             return CreatedAtAction("GetMatiere", new { id = matiere.Id }, matiere);
         }

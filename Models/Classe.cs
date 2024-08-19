@@ -15,5 +15,5 @@ public partial class Classe
 
     public virtual ICollection<Eleve> Eleves { get; } = new List<Eleve>();
 
-    public virtual Professeur? Professeur { get; }
+    public virtual Professeur? Professeur { get;}
 }
